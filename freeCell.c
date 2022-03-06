@@ -18,6 +18,9 @@
 #define WHITE 15
 #define BLACK 0
 
+// Movimentos
+int moves = 0;
+
 // Definição da estrutura das cartas
 typedef struct no
 {
@@ -197,16 +200,39 @@ void distribuirMesa()
 
 } // end distribuirMesa()
 
+void telaInicial()
+{
+    // Limpa o terminal
+    system("cls");
+
+    textcolor(WHITE); // Muda a cor do texto para branca
+
+    printf(":::::::::::::::::::::::::::::::::::::::::::::::::::::::FREE CELL::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n");
+    printf("\nOBEJTIVO:\n\n- Preencher os 4 naipes disponiveis com as cartas em ordem crescente e do mesmo naipe.\n");
+    printf("\nREGRAS:\n");
+    printf("\n- As cartas das pilhas da mesa que serao movidas estao mais a direita.");
+    printf("\n- Para as cartas serem movidas para as pilhas da mesa elas devem ser de uma cor diferente da que esta na base e na sequencia.");
+    printf("\n- Apenas o rei (13) pode ser movido para uma pilha vazia da mesa.");
+    printf("\n- Cada pilha do temporario comporta apenas uma carta.");
+    printf("\n- E possivel mover um bloco de cartas entre as pilhas da mesa desde que todas esteja na sequencia e em cores alternadas.");
+    printf("\n- As cartas a serem colocadas nas pilhas dos naipes devem ser da menor para a maior e do mesmo naipe.");
+    printf("\n\n:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::");
+
+    printf("\n\n");
+    system("pause");
+
+} // end telaInicial()
+
 // Função para imprimir o TEMP, o NAIPE e a MESA
 void imprime()
 {
     tCarta *atual;
     int i;
 
-    textcolor(WHITE); // Muda a cor do texto para branca
-
     // Limpa o terminal
     system("cls");
+
+    textcolor(WHITE); // Muda a cor do texto para branca
 
     printf("::::::::::::::::::::::FREE CELL::::::::::::::::::::::\n");
 
@@ -216,7 +242,7 @@ void imprime()
     {
         if (primTemp[i] != NULL)
         {
-            printf("%d-[%02d/", i, primTemp[i]->num);
+            printf("%d-[%02d/", i + 1, primTemp[i]->num);
             // Imprime o texto do naipe com a cor correspondente
             if (cartaVermelha(primTemp[i]))
             {
@@ -232,7 +258,7 @@ void imprime()
         } // end if(primTemp[i] != NULL)
         else
         {
-            printf("%d-[    ] ", i);
+            printf("%d-[    ] ", i + 1);
         } // end else
     }     // end for(i = 0; i < TAM_TEMP; i++)
     printf("\n\n");
@@ -241,7 +267,7 @@ void imprime()
     for (i = 0; i < TAM_NAIPE; i++)
     {
         atual = primNaipe[i];
-        printf("[NAIPE %d] = ", i);
+        printf("[NAIPE %d] = ", i + 1);
         while (atual != NULL)
         {
             printf("[%02d/", atual->num);
@@ -267,7 +293,7 @@ void imprime()
     for (i = 0; i < TAM_MESA; i++)
     {
         atual = primMesa[i];
-        printf("[MESA %d] = ", i);
+        printf("[MESA %d] = ", i + 1);
         while (atual != NULL)
         {
             printf("[%02d/", atual->num);
@@ -291,6 +317,19 @@ void imprime()
 
 } // end imprime()
 
+void telaFinal()
+{
+    // Limpa o terminal
+    system("cls");
+
+    textcolor(WHITE); // Muda a cor do texto para branca
+
+    printf("::::::::::::::::::::::FREE CELL::::::::::::::::::::::\n");
+    printf("\n\n\n\n                    VOCE VENCEU!\n                      PARABENS!\n\n\n\n");
+    printf("\n:::::::::::::::::::::::::::::::::::::::::::::::::::::\n\n");
+
+} // telaFinal()
+
 // Função para mover da MESA para o TEMP
 void moveMesaTemp()
 {
@@ -298,8 +337,9 @@ void moveMesaTemp()
     int posMesa, posTemp;
 
     // Inserção da posição da mesa pelo usuário
-    printf("Digite a posicao da MESA na qual esta a carta que deseja mover (0 - 7): ");
+    printf("Digite a posicao da MESA na qual esta a carta que deseja mover (1 - 8): ");
     scanf("%d", &posMesa);
+    posMesa--;
 
     // Verifica se a posição da mesa é válida
     if ((posMesa >= 0) && (posMesa <= 7))
@@ -308,8 +348,9 @@ void moveMesaTemp()
         if (primMesa[posMesa] != NULL)
         {
             // Inserção da posição de temp pelo usuário
-            printf("Digite a posicao de TEMP para qual deseja mover a carta (0 - 3): ");
+            printf("Digite a posicao de TEMP para qual deseja mover a carta (1 - 4): ");
             scanf("%d", &posTemp);
+            posTemp--;
 
             // Percorre a mesa até o último elemento
             ant = NULL;
@@ -332,16 +373,18 @@ void moveMesaTemp()
                     if (ant == NULL)
                     {
                         primMesa[posMesa] = NULL;
+                        moves++;
                     } // end if(ant == NULL)
                     else
                     {
                         ant->prox = NULL;
+                        moves++;
                     } // end else
                 }     // end if(primTemp[posTemp] == NULL)
                 else
                 {
                     system("cls");
-                    printf(":::Posicao %d de TEMP nao disponivel!:::\n\n", posTemp);
+                    printf(":::Posicao %d de TEMP nao disponivel!:::\n\n", posTemp + 1);
                     system("pause");
                 } // end else
             }     // end if((posTemp >= 0) && (posTemp <= 3))
@@ -353,7 +396,7 @@ void moveMesaTemp()
         else
         {
             system("cls");
-            printf(":::Sem carta na pilha %d de MESA:::\n\n", posMesa);
+            printf(":::Sem carta na pilha %d de MESA:::\n\n", posMesa + 1);
             system("pause");
         } // end else
     }     // end if((posMesa >= 0) && (posMesa <= 7))
@@ -371,8 +414,9 @@ void moveTempMesa()
     int posMesa, posTemp;
 
     // Inserção da posição de temp pelo usuário
-    printf("Digite a posicao de TEMP na qual esta a carta que deseja mover (0 - 3): ");
+    printf("Digite a posicao de TEMP na qual esta a carta que deseja mover (1 - 4): ");
     scanf("%d", &posTemp);
+    posTemp--;
 
     // Verifica se a posição de temp é válida
     if ((posTemp >= 0) && (posTemp <= 3))
@@ -381,8 +425,9 @@ void moveTempMesa()
         if (primTemp[posTemp] != NULL)
         {
             // Inserção da posição da mesa pelo usuário
-            printf("Digite a posicao da MESA para qual deseja mover a carta (0 - 7): ");
+            printf("Digite a posicao da MESA para qual deseja mover a carta (1 - 8): ");
             scanf("%d", &posMesa);
+            posMesa--;
 
             // Verifica se a posição da mesa é válida
             if ((posMesa >= 0) && (posMesa <= 7))
@@ -396,6 +441,7 @@ void moveTempMesa()
                         // Atualiza a pilha de temp e coloca a carta na pilha da mesa
                         primMesa[posMesa] = primTemp[posTemp];
                         primTemp[posTemp] = NULL;
+                        moves++;
                     } // end if(primTemp[posTemp]->num == 13)
                     else
                     {
@@ -417,6 +463,7 @@ void moveTempMesa()
                     {
                         atual->prox = primTemp[posTemp];
                         primTemp[posTemp] = NULL;
+                        moves++;
                     } // end if()
                     else
                     {
@@ -432,7 +479,7 @@ void moveTempMesa()
         else
         {
             system("cls");
-            printf(":::Sem carta na posicao %d de TEMP!:::\n\n", posTemp);
+            printf(":::Sem carta na posicao %d de TEMP!:::\n\n", posTemp + 1);
             system("pause");
         } // end else
     }     // end if((posTemp >= 0) && (posTemp <= 3))
@@ -450,8 +497,9 @@ void moveMesaNaipe()
     int posMesa, posNaipe;
 
     // Inserção da posição da mesa pelo usuário
-    printf("Digite a posicao da MESA na qual esta a carta que deseja mover (0 - 7): ");
+    printf("Digite a posicao da MESA na qual esta a carta que deseja mover (1 - 8): ");
     scanf("%d", &posMesa);
+    posMesa--;
 
     // Verifica se a posição da mesa é válida
     if ((posMesa >= 0) && (posMesa <= 7))
@@ -460,8 +508,9 @@ void moveMesaNaipe()
         if (primMesa[posMesa] != NULL)
         {
             // Inserção da posição de naipe pelo usuário
-            printf("Digite a posicao de NAIPE para qual deseja mover a carta (0 - 3): ");
+            printf("Digite a posicao de NAIPE para qual deseja mover a carta (1 - 4): ");
             scanf("%d", &posNaipe);
+            posNaipe--;
 
             // Percorre a mesa até achar o último elemento
             ant = NULL;
@@ -495,12 +544,14 @@ void moveMesaNaipe()
                     {
                         // A carta passa a ser a primeira do naipe
                         primNaipe[posNaipe] = atual;
+                        moves++;
                     } // end if(primNaipe[posNaipe] == NULL)
                     else
                     {
                         // Move a carta
                         atual->prox = primNaipe[posNaipe];
                         primNaipe[posNaipe] = atual;
+                        moves++;
                     } // end else()
                 }     // end if()
                 else
@@ -516,7 +567,7 @@ void moveMesaNaipe()
         else
         {
             system("cls");
-            printf(":::Sem carta na pilha %d de MESA!:::\n\n", posMesa);
+            printf(":::Sem carta na pilha %d de MESA!:::\n\n", posMesa + 1);
             system("pause");
         } // end else
     }     // end if((posMesa >= 0) && (posMesa <= 7))
@@ -533,8 +584,9 @@ void moveNaipeTemp()
     int posNaipe, posTemp;
 
     // Inserção da posição do naipe pelo usuário
-    printf("Digite a posicao de NAIPE na qual esta a carta que deseja mover (0 - 3): ");
+    printf("Digite a posicao de NAIPE na qual esta a carta que deseja mover (1 - 4): ");
     scanf("%d", &posNaipe);
+    posNaipe--;
 
     // Verifica se a posição do naipe é válida
     if ((posNaipe >= 0) && (posNaipe <= 3))
@@ -543,8 +595,9 @@ void moveNaipeTemp()
         if (primNaipe[posNaipe] != NULL)
         {
             // Inserção da posição de temp pelo usuário
-            printf("Digite a posicao de TEMP para qual deseja mover a carta (0 - 3): ");
+            printf("Digite a posicao de TEMP para qual deseja mover a carta (1 - 4): ");
             scanf("%d", &posTemp);
+            posTemp--;
 
             // Verifica se a posição de temp é válida
             if ((posTemp >= 0) && (posTemp <= 3))
@@ -556,11 +609,12 @@ void moveNaipeTemp()
                     primTemp[posTemp] = primNaipe[posNaipe];
                     primNaipe[posNaipe] = primNaipe[posNaipe]->prox;
                     primTemp[posTemp]->prox = NULL;
+                    moves++;
                 } // end if(primTemp[posTemp] == NULL)
                 else
                 {
                     system("cls");
-                    printf(":::Posicao %d de TEMP nao disponivel!:::\n\n", posTemp);
+                    printf(":::Posicao %d de TEMP nao disponivel!:::\n\n", posTemp + 1);
                     system("pause");
                 } // end else
             }     // end if((posTemp >= 0) && (posTemp <= 3))
@@ -572,7 +626,7 @@ void moveNaipeTemp()
         else
         {
             system("cls");
-            printf(":::Sem carta na pilha %d de NAIPE!:::\n\n", posNaipe);
+            printf(":::Sem carta na pilha %d de NAIPE!:::\n\n", posNaipe + 1);
             system("pause");
         } // end else
     }     // end if((posNaipe >= 0) && (posNaipe <= 3))
@@ -589,8 +643,9 @@ void moveTempNaipe()
     int posTemp, posNaipe;
 
     // Inserção da posição de temp pelo usuário
-    printf("Digite a posicao da TEMP na qual esta a carta que deseja mover (0 - 3): ");
+    printf("Digite a posicao da TEMP na qual esta a carta que deseja mover (1 - 4): ");
     scanf("%d", &posTemp);
+    posTemp--;
 
     // Verifica se a posição de temp é válida
     if ((posTemp >= 0) && (posTemp <= 3))
@@ -599,8 +654,9 @@ void moveTempNaipe()
         if (primTemp[posTemp] != NULL)
         {
             // Inserção da posição de naipe pelo usuário
-            printf("Digite a posicao de NAIPE para qual deseja mover a carta (0 - 3): ");
+            printf("Digite a posicao de NAIPE para qual deseja mover a carta (1 - 4): ");
             scanf("%d", &posNaipe);
+            posNaipe--;
 
             // Verifica se a posição de naipe é válida
             if ((posNaipe >= 0) && (posNaipe <= 3))
@@ -613,6 +669,7 @@ void moveTempNaipe()
                     primTemp[posTemp]->prox = primNaipe[posNaipe];
                     primNaipe[posNaipe] = primTemp[posTemp];
                     primTemp[posTemp] = NULL;
+                    moves++;
                 } // end if()
                 else
                 {
@@ -627,7 +684,7 @@ void moveTempNaipe()
         else
         {
             system("cls");
-            printf(":::Sem carta na pilha %d de TEMP!:::\n\n", posTemp);
+            printf(":::Sem carta na pilha %d de TEMP!:::\n\n", posTemp + 1);
             system("pause");
         } // end else
     }     // end if((posTemp >= 0) && (posTemp <= 3))
@@ -645,8 +702,9 @@ void moveNaipeMesa()
     int posMesa, posNaipe;
 
     // Inserção da posição do naipe pelo usuário
-    printf("Digite a posicao do NAIPE na qual esta a carta que deseja mover (0 - 3): ");
+    printf("Digite a posicao do NAIPE na qual esta a carta que deseja mover (1 - 4): ");
     scanf("%d", &posNaipe);
+    posNaipe--;
 
     // Verifica se a posição do naipe é válida
     if ((posNaipe >= 0) && (posNaipe <= 3))
@@ -655,8 +713,9 @@ void moveNaipeMesa()
         if (primNaipe[posNaipe] != NULL)
         {
             // Inserção da posição da mesa pelo usuário
-            printf("Digite a posicao da MESA para qual deseja mover a carta (0 - 7): ");
+            printf("Digite a posicao da MESA para qual deseja mover a carta (1 - 8): ");
             scanf("%d", &posMesa);
+            posMesa--;
 
             // Verifica se a posição da mesa é válida
             if ((posMesa >= 0) && (posMesa <= 7))
@@ -683,6 +742,7 @@ void moveNaipeMesa()
                         primMesa[posMesa] = primNaipe[posNaipe];
                         primNaipe[posNaipe] = primNaipe[posNaipe]->prox;
                         primMesa[posMesa]->prox = NULL;
+                        moves++;
                     } // end if(primNaipe[posNaipe]->num == 13)
                     else
                     {
@@ -696,6 +756,7 @@ void moveNaipeMesa()
                     atual->prox = primNaipe[posNaipe];
                     primNaipe[posNaipe] = primNaipe[posNaipe]->prox;
                     atual->prox->prox = NULL;
+                    moves++;
                 } // end else if()
                 else
                 {
@@ -710,7 +771,7 @@ void moveNaipeMesa()
         else
         {
             system("cls");
-            printf(":::Sem carta na pilha %d de NAIPE!:::\n\n", posNaipe);
+            printf(":::Sem carta na pilha %d de NAIPE!:::\n\n", posNaipe + 1);
             system("pause");
         } // end else
     }     // end if((posNaipe >= 0) && (posNaipe <= 3))
@@ -728,8 +789,9 @@ void moveMesaMesa()
     int posOrigemMesa, posDestinoMesa, movimento, quant = 0, indice, i = 0;
 
     // Inserção da posição da mesa de origem pelo usuário
-    printf("Digite a posicao da MESA de origem (0 - 7): ");
+    printf("Digite a posicao da MESA de origem (1 - 8): ");
     scanf("%d", &posOrigemMesa);
+    posOrigemMesa--;
 
     // Verifica se a posição da mesa de origem é válida
     if ((posOrigemMesa >= 0) && (posOrigemMesa <= 7))
@@ -738,8 +800,9 @@ void moveMesaMesa()
         if (primMesa[posOrigemMesa] != NULL)
         {
             // Inserção da posição da mesa de destino pelo usuário
-            printf("Digite a posicao da MESA de destino (0 - 7): ");
+            printf("Digite a posicao da MESA de destino (1 - 8): ");
             scanf("%d", &posDestinoMesa);
+            posDestinoMesa--;
 
             // Verifica se a posição da mesa de destino é válida
             if ((posDestinoMesa >= 0) && (posDestinoMesa <= 7))
@@ -757,11 +820,11 @@ void moveMesaMesa()
                 }     // end if(primMesa[posDestinoMesa] != NULL)
 
                 // Inserção do tipo de movimento pelo usuário
-                printf("(0) - Mover uma carta\n(1) - Mover um bloco\nEscolha uma opcao: ");
+                printf("(1) - Mover uma carta\n(2) - Mover um bloco\nEscolha uma opcao: ");
                 scanf("%d", &movimento);
 
                 // Verifica se a opção é válida
-                if (movimento == 0)
+                if (movimento == 1)
                 {
                     // Percorre a mesa de origem até achar o último elemento
                     antOrigem = NULL;
@@ -782,6 +845,7 @@ void moveMesaMesa()
                             // A carta passa a ser a primeira da mesa
                             primMesa[posDestinoMesa] = atualOrigem;
                             antOrigem->prox = NULL;
+                            moves++;
                         } // end if(atualOrigem->num == 13)
                         else
                         {
@@ -797,20 +861,22 @@ void moveMesaMesa()
                             // Move a carta
                             atualDestino->prox = atualOrigem;
                             primMesa[posOrigemMesa] = NULL;
+                            moves++;
                         } // end if(antOrigem == NULL)
                         else
                         {
                             // Move a carta
                             atualDestino->prox = atualOrigem;
                             antOrigem->prox = NULL;
+                            moves++;
                         } // end else
                     }     // end else if()
                     else
                     {
                         mensagem(":::A carta a ser movida deve ser de uma cor diferente e na sequencia da que esta no destino!:::");
                     } // end else
-                }     // end if(movimento == 0)
-                else if (movimento == 1)
+                }     // end if(movimento == 1)
+                else if (movimento == 2)
                 {
                     // Percorre a origem verificando a quantidade de elementos disponíveis
                     atualOrigem = primMesa[posOrigemMesa];
@@ -854,12 +920,14 @@ void moveMesaMesa()
                                         // Move o bloco
                                         primMesa[posDestinoMesa] = atualOrigem;
                                         primMesa[posOrigemMesa] = NULL;
+                                        moves++;
                                     } // end if(antOrigem == NULL)
                                     else
                                     {
                                         // Move o bloco
                                         primMesa[posDestinoMesa] = atualOrigem;
                                         antOrigem->prox = NULL;
+                                        moves++;
                                     } // end else
                                 }     // end if(atualOrigem->num == 13)
                                 else
@@ -876,12 +944,14 @@ void moveMesaMesa()
                                     // Move a carta
                                     atualDestino->prox = atualOrigem;
                                     primMesa[posOrigemMesa] = NULL;
+                                    moves++;
                                 } // end if(antOrigem == NULL)
                                 else
                                 {
                                     // Move a carta
                                     atualDestino->prox = atualOrigem;
                                     antOrigem->prox = NULL;
+                                    moves++;
                                 } // end else
                             }     // end else if()
                             else
@@ -898,7 +968,7 @@ void moveMesaMesa()
                     {
                         mensagem(":::Indice invalido!:::");
                     } // end else
-                }     // end else if(movimento == 1)
+                }     // end else if(movimento == 2)
                 else
                 {
                     mensagem(":::Insira uma opcao valida!:::");
@@ -912,7 +982,7 @@ void moveMesaMesa()
         else
         {
             system("cls");
-            printf(":::Sem carta na pilha %d da MESA de origem!:::\n\n", posOrigemMesa);
+            printf(":::Sem carta na pilha %d da MESA de origem!:::\n\n", posOrigemMesa + 1);
             system("pause");
         } // end else
     }     // end if((posOrigemMesa >= 0) && (posOrigemMesa <= 7))
@@ -1008,10 +1078,35 @@ void reiniciar()
 
 } // end reiniciar()
 
+bool playerWin()
+{
+    int i;
+
+    // Percorre a pilha de Naipes verificando se as condições de vitória estão atendidas
+    for (i = 0; i < TAM_NAIPE; i++)
+    {
+        if (primNaipe[i] != NULL)
+        {
+            if (primNaipe[i]->num != 13)
+            {
+                return false;
+            } // end if(primNaipe[i]->num != 13)
+        }     // end if(primNaipe[i] != NULL)
+        else
+        {
+            return false;
+        } // end else
+
+    } // end for(i = 0; i < TAM_NAIPE; i++)
+    return true;
+
+} // end playerWin()
+
 // Função principal
 int main(int argc, char **argv)
 {
     int op = 0;
+    char confirm = 'n';
 
     backcolor(GREEN); // Cor de fundo do terminal muda para verde
 
@@ -1027,6 +1122,9 @@ int main(int argc, char **argv)
     // Distribui as cartas na mesa
     distribuirMesa();
 
+    // Imprime a tela inicial do jogo
+    telaInicial();
+
     while (op != 9)
     {
         // Imprime TEMP, NAIPE e MESA
@@ -1035,6 +1133,7 @@ int main(int argc, char **argv)
         textcolor(WHITE); // Cor do texto branca
 
         // Menu
+        printf("Movimentos: %02d", moves);
         printf("(1) - Mover: MESA --> TEMP\n");
         printf("(2) - Mover: MESA --> NAIPE\n");
         printf("(3) - Mover: TEMP --> MESA\n");
@@ -1084,22 +1183,47 @@ int main(int argc, char **argv)
             break;
         case 8:
             // Reiniciar
-            reiniciar();
+            printf("Tem certeza?(s/n) ");
+            scanf("%c", &confirm);
+
+            if (confirm == 's')
+            {
+                reiniciar();
+            } // end if(confirm != 's')
             break;
         case 9:
             // Sair
-            printf("\nSaindo...");
+            printf("Tem certeza?(s/n) ");
+            scanf("%c", &confirm);
+
+            if (confirm != 's')
+            {
+                op = 0;
+            } // end if(confirm != 's')
+
+            printf("\n");
             break;
         default:
             // Opção fora do menu
-            printf("\n:::Opcao Invalida!:::\n");
+            system("cls");
+            printf(":::Opcao Invalida!:::\n\n");
+            system("pause");
             break;
         } // end switch(op)
-    }     // end while(op != 4)
+
+        if (playerWin())
+        {
+            op = 9;
+            // Imprime a tela final do jogo
+            telaFinal();
+        }
+
+    } // end while(op != 4)
 
     // Liberação da memória
     destroiTudo();
 
+    system("pause");
     return 0;
 
 } // end main()
