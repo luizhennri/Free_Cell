@@ -208,11 +208,11 @@ void telaInicial()
     textcolor(WHITE); // Muda a cor do texto para branca
 
     printf(":::::::::::::::::::::::::::::::::::::::::::::::::::::::FREE CELL::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n");
-    printf("\nOBEJTIVO:\n\n- Preencher os 4 naipes disponiveis com as cartas em ordem crescente e do mesmo naipe.\n");
+    printf("\nOBJETIVO:\n\n- Preencher os 4 naipes disponiveis com as cartas em ordem crescente e do mesmo naipe.\n");
     printf("\nREGRAS:\n");
     printf("\n- As cartas das pilhas da mesa que serao movidas estao mais a direita.");
     printf("\n- Para as cartas serem movidas para as pilhas da mesa elas devem ser de uma cor diferente da que esta na base e na sequencia.");
-    printf("\n- Apenas o rei (13) pode ser movido para uma pilha vazia da mesa.");
+    printf("\n- Apenas o rei (13) pode ser movido para uma das pilhas vazias da mesa.");
     printf("\n- Cada pilha do temporario comporta apenas uma carta.");
     printf("\n- E possivel mover um bloco de cartas entre as pilhas da mesa desde que todas esteja na sequencia e em cores alternadas.");
     printf("\n- As cartas a serem colocadas nas pilhas dos naipes devem ser da menor para a maior e do mesmo naipe.");
@@ -325,7 +325,7 @@ void telaFinal()
     textcolor(WHITE); // Muda a cor do texto para branca
 
     printf("::::::::::::::::::::::FREE CELL::::::::::::::::::::::\n");
-    printf("\n\n\n\n                    VOCE VENCEU!\n                      PARABENS!\n\n\n\n");
+    printf("\n\n\n\n                    VOCE VENCEU!\n                      PARABENS!\n\n             Movimentos realizados: %04d\n\n\n\n", moves);
     printf("\n:::::::::::::::::::::::::::::::::::::::::::::::::::::\n\n");
 
 } // telaFinal()
@@ -1053,6 +1053,9 @@ void reiniciar()
     // Inicializa os montes
     primMonte = NULL;
 
+    // Reseta o valor dos movimentos
+    moves = 0;
+
     // Percorre as posições de MESA (0 a 7)
     for (i = 0; i < TAM_MESA; i++)
     {
@@ -1133,7 +1136,7 @@ int main(int argc, char **argv)
         textcolor(WHITE); // Cor do texto branca
 
         // Menu
-        printf("Movimentos: %02d", moves);
+        printf("Movimentos: %04d\n", moves);
         printf("(1) - Mover: MESA --> TEMP\n");
         printf("(2) - Mover: MESA --> NAIPE\n");
         printf("(3) - Mover: TEMP --> MESA\n");
