@@ -13,7 +13,7 @@ Data: 2022.1
 
 **Materiais de referência:**
 
-- Estruturas de Dados Usando C - Aaron Tenebaum, Yedidyah Langsam, Moshe J. Augenstein
-- Programação Estruturada de Computadores Algoritmos Estruturados - Harry Farrer
+- Livro: Estruturas de Dados Usando C - Aaron Tenebaum, Yedidyah Langsam, Moshe J. Augenstein
+- Livro: Programação Estruturada de Computadores Algoritmos Estruturados - Harry Farrer
 - https://xn--pacincia-n1a.eu/freecell/
 - https://docs.microsoft.com/en-us/windows/console/console-screen-buffers?redirectedfrom=MSDN#_win32_character_attributes
