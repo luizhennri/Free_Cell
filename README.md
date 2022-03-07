@@ -1,19 +1,17 @@
 # Free_Cell
 
-Jogo Free Cell desenvolvido em linguagem C.
+Jogo Free Cell desenvolvido em linguagem C. Recomendável utilizar o console do windows para jogar o jogo. As regras estão na tela inicial.
 
 Desenvolvido por: Luiz Henrique Alves do Nascimento.
 
 Data: 2022.1
 
-Objetivos:
+**Objetivos:**
 
 - Usar TADs para recriar o jogo Free Cell (paciência) em linguagem c
 - Usar o console para realizar todos os movimentos disponíveis
 
-Recomendável utilizar o console do windows para jogar o jogo. As regras estão na tela inicial do jogo.
-
-Materiais de referência:
+**Materiais de referência:**
 
 - Estruturas de Dados Usando C - Aaron Tenebaum, Yedidyah Langsam, Moshe J. Augenstein
 - Programação Estruturada de Computadores Algoritmos Estruturados - Harry Farrer
