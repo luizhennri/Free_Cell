@@ -66,6 +66,52 @@ void mensagem(char *textIn)
 
 } // end mensagem()
 
+// Função para salvar a pontuação
+void save(int scoreIn)
+{
+    FILE *arq;
+
+    // Abre o arquivo
+    arq = fopen("record_score", "w");
+
+    if (arq != NULL)
+    {
+        // Salva o valor
+        fprintf(arq, "%d\n", scoreIn);
+        fclose(arq);
+    } // end if(arq != NULL)
+    else
+    {
+        // Caso não consiga abrir
+        mensagem("Erro no arquivo!");
+    } // end else
+
+} // end save()
+
+// Função para carregar a pontuação
+int load_score()
+{
+    FILE *arq;
+    int score = 0;
+
+    // Abre o arquivo
+    arq = fopen("record_score", "r");
+
+    if (arq != NULL)
+    {
+        // Carrega o valor
+        fscanf(arq, "%d", &score);
+        fclose(arq);
+    } // end if(arq != NULL)
+    else
+    {
+        save(score);
+    } // end else
+
+    return score;
+
+} // end load_score()
+
 // Função para verificar se uma carta é vermelha
 bool cartaVermelha(tCarta *carta)
 {
@@ -208,7 +254,7 @@ void telaInicial()
     textcolor(WHITE); // Muda a cor do texto para branca
 
     printf(":::::::::::::::::::::::::::::::::::::::::::::::::::::::FREE CELL::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n");
-    printf("\nOBJETIVO:\n\n- Preencher os 4 naipes disponiveis com as cartas em ordem crescente e do mesmo naipe.\n");
+    printf("\nOBJETIVO:\n\n- Preencher, com a menor quantidade de movimentos possiveis, os 4 naipes disponiveis com as cartas em ordem crescente e do mesmo naipe.\n");
     printf("\nREGRAS:\n");
     printf("\n- As cartas das pilhas da mesa que serao movidas estao mais a direita.");
     printf("\n- Para as cartas serem movidas para as pilhas da mesa elas devem ser de uma cor diferente da que esta na base e na sequencia.");
@@ -319,13 +365,24 @@ void imprime()
 
 void telaFinal()
 {
+    int score = 0;
+
+    score = load_score();
+
+    if ((moves < score) || (score == 0))
+    {
+        save(moves);
+    } // end if((moves < score) || (score == 0))
+
+    score = load_score();
+
     // Limpa o terminal
     system("cls");
 
     textcolor(WHITE); // Muda a cor do texto para branca
 
     printf("::::::::::::::::::::::FREE CELL::::::::::::::::::::::\n");
-    printf("\n\n\n\n                    VOCE VENCEU!\n                      PARABENS!\n\n             Movimentos realizados: %04d\n\n\n\n", moves);
+    printf("\n\n\n\n                    VOCE VENCEU!\n                      PARABENS!\n\n             Movimentos realizados: %04d\n\n                    Recorde: %04d\n\n\n\n", moves, score);
     printf("\n:::::::::::::::::::::::::::::::::::::::::::::::::::::\n\n");
 
 } // telaFinal()

@@ -54,3 +54,6 @@ output
 
 # VsCode Files
 .vscode
+
+# Game File
+record_score
