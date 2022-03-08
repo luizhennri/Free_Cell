@@ -945,8 +945,9 @@ void moveMesaMesa()
                     } // end while(atualOrigem->prox != NULL)
 
                     // Inserção da posição que inicia o bloco que o usuário quer mover
-                    printf("Digite o indice da carta que inicia o bloco que deseja mover (0 - %d): ", quant);
+                    printf("Digite o indice da carta que inicia o bloco que deseja mover (1 - %d): ", quant + 1);
                     scanf("%d", &indice);
+                    indice--;
 
                     // Verifica se o índice é válido
                     if ((indice >= 0) && (indice <= quant))
