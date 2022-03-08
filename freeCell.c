@@ -72,7 +72,7 @@ void save(int scoreIn)
     FILE *arq;
 
     // Abre o arquivo
-    arq = fopen("record_score", "w");
+    arq = fopen("score_record", "w");
 
     if (arq != NULL)
     {
@@ -95,7 +95,7 @@ int load_score()
     int score = 0;
 
     // Abre o arquivo
-    arq = fopen("record_score", "r");
+    arq = fopen("score_record", "r");
 
     if (arq != NULL)
     {

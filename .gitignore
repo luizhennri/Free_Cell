@@ -56,4 +56,4 @@ output
 .vscode
 
 # Game File
-record_score
+score_record
