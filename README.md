@@ -20,7 +20,7 @@ Jogo Free Cell desenvolvido em linguagem C para a disciplina de estrutura de dad
 - https://docs.microsoft.com/en-us/windows/console/console-screen-buffers?redirectedfrom=MSDN#_win32_character_attributes
 
 
-  ## Observações:
+## Observações:
 
 - Necessário compilar o código para criar o executável e rodar o jogo;
 - Recomendável utilizar o console do windows para jogar;
